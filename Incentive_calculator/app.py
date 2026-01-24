@@ -64,7 +64,7 @@ if project_choice == "Monthly SD Incentive":
         lower_name = name.lower()
         if lower_name.endswith(('.xls', '.xlsx', '.xlsm', '.xlsb')):
             try:
-                return pd.read_excel(uploaded, engine='openpyxl')
+                return pd.read_excel(uploaded, engine='openpyxl', dtype=str)
             except Exception:
                 try:
                     uploaded.seek(0)
@@ -73,7 +73,7 @@ if project_choice == "Monthly SD Incentive":
                     pass
         try:
             uploaded.seek(0)
-            return pd.read_excel(uploaded, engine='openpyxl')
+            return pd.read_excel(uploaded, engine='openpyxl', dtype=str)
         except Exception:
             pass
         encodings_to_try = ["utf-8", "cp1252", "latin1", "iso-8859-1"]
