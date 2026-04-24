@@ -232,7 +232,18 @@ if project_choice == "Monthly SD Incentive":
                 new['NewAccVal'] = new[keys['newacc']].astype(str).str.strip()
                 real_col = keys.get('realisation_date')
                 if real_col and real_col in new.columns:
-                    new['_RealisationParsed'] = pd.to_datetime(new[real_col].astype(str).str.strip().replace('nan', ''), errors='coerce', dayfirst=True, infer_datetime_format=True)
+                    # Convert safely without breaking types
+                    temp_col = new[real_col]
+
+                    # Handle NaN properly
+                    temp_col = temp_col.replace({None: pd.NA})
+
+                    # Convert to datetime safely
+                    new['_RealisationParsed'] = pd.to_datetime(
+                        temp_col,
+                        errors='coerce',
+                        dayfirst=True
+                    )
                 else:
                     new['_RealisationParsed'] = pd.NaT
 
